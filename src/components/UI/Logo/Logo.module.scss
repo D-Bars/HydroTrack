@@ -1,0 +1,7 @@
+@use '../../../styles/global.scss' as *;
+
+.wrapper__img{
+    flex: 0 0 auto;
+
+    @include img_box(120px, auto);
+}
