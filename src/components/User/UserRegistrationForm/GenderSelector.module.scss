@@ -1,0 +1,45 @@
+@use '../../../styles/global.scss' as *;
+
+.gender {
+  gap: 1vw;
+
+  @include flex__box(column, flex-start);
+}
+
+.gender__label {
+  margin-bottom: 0.5vh;
+
+  @include text(90%, 600, $fontColorMain);
+}
+
+.gender__options {
+  gap: 0.8vw;
+
+  @include flex__box(row, center, flex-start);
+}
+
+.gender__option {
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
+  background: #333;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: .2s ease;
+
+  @include text(90%, 600, $fontColorMain);
+  @include flex__box(row, center, center);
+  gap: 0.5rem;
+
+  input {
+    display: none;
+  }
+}
+
+.gender__option_selected {
+  border-color: rgba($color2, 0.8);
+  background: rgba($color2, 0.35);
+}
+
+.gender__error {
+  @include text(75%, 500, $color3);
+}

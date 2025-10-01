@@ -1,0 +1,35 @@
+@use '../../../styles/global.scss' as *;
+
+.form {
+  gap: 4vh;
+
+  @include flex__box(column, stretch);
+}
+
+.form__fields {
+  gap: 3vh;
+
+  @include flex__box(column, stretch);
+}
+
+.form__submit {
+  padding: 1.5vh;
+  border-radius: 14px;
+  border: none;
+  background: $color2;
+  color: $fontColorMain;
+  transition: .2s ease;
+  cursor: pointer;
+
+  @include text(110%, 700, $fontColorMain);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba($color2, 0.35);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+}

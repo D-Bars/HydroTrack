@@ -1,0 +1,32 @@
+@use '../../styles/global.scss' as *;
+
+.register {
+  @include flex__box(row, center, center);
+  @include box(100%, 2.5%, 90dvh);
+}
+
+.register__card {
+  width: clamp(450px, 40%, 600px);
+  padding: 5vh 2.5%;
+  border-radius: 24px;
+  background: rgba(#fff, 0.04);
+  box-shadow: 0 24px 40px rgba(#000, 0.25);
+  gap: 2.5vh;
+
+  @include flex__box(column, stretch);
+}
+
+.register__head {
+  text-align: center;
+  gap: 1vh;
+
+  @include flex__box(column, center);
+}
+
+.register__title {
+  @include text(160%, 700, $fontColorMain);
+}
+
+.register__subtitle {
+  @include text(95%, 400, rgba($fontColorSup, 0.9));
+}

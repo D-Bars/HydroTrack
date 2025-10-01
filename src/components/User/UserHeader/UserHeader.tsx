@@ -1,22 +1,31 @@
 import { useState } from "react";
 import cl from "./UserHeader.module.scss";
+import useUserStore from "../../../store/userStore";
+import { getAvatarIcon } from "../../../utils/avatar/getAvatarIco";
 
 const ModalItems = [
-    { id: 1, label: "Item 1" },
-    { id: 2, label: "Item 2" },
-    { id: 3, label: "Item 3" },
+    { id: 1, label: "Profile" },
+    { id: 2, label: "Settings" },
+    { id: 3, label: "Logout" },
 ];
 
 
 const UserHeader = () => {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [isAnimating, setIsAnimating] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(false);
+    const nickname = useUserStore((state) => state.nickname);
+    const gender = useUserStore((state) => state.gender);
+    const isRegistered = useUserStore((state) => state.isRegistered);
 
     const handleToggle = () => {
         if (isAnimating) return;
-        setIsOpen(!isOpen);
+        setIsOpen((prev) => !prev);
         setIsAnimating(true);
     };
+
+    const avatarSrc = getAvatarIcon(gender);
+    const greeting = isRegistered && nickname ? `Hi, ${nickname}` : "Hi there";
+
     return (
         <div className={cl.userHeader}>
             <button
@@ -26,9 +35,9 @@ const UserHeader = () => {
                 aria-expanded={isOpen}
             >
                 <div className={cl.avatar__wrapper__img}>
-                    <img src="/User/anonymous.png" alt="UserAvatar" />
+                    <img src={avatarSrc} alt="UserAvatar" />
                 </div>
-                <span className={cl.user__name}>User Name</span>
+                <span className={cl.user__name}>{greeting}</span>
                 <div
                     className={`${cl.arrow__wrapper__img} ${isOpen ? cl.arrow__wrapper__img_open : ""}`}
                 >
