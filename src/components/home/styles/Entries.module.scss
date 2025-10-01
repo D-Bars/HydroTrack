@@ -1,0 +1,53 @@
+@use '../../../styles/global.scss' as *;
+
+.water__progress__body {
+    gap: 1vh;
+
+    @include box(100%);
+    @include flex__box(column, flex-start);
+
+    & .water__progress__item {
+        gap: 0.7vw;
+
+        @include flex__box(row, center);
+        @include box(100%);
+
+        & .item__day {
+            flex: 0 0 85px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1vh 1vw;
+            background-color: #333;
+            border-radius: 10px;
+            white-space: nowrap;
+            text-align: center;
+            cursor: default;
+
+            @include text(100%, 600, $fontColorSup);
+        }
+
+        & .water__progress__item__wrapper {
+            width: 100%;
+            position: relative;
+
+            @include flex__box(row, center, space-between);
+            @include text(100%, 600, $fontColorMain);
+
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                height: 1px;
+                background: #333;
+                width: 100%;
+            }
+        }
+
+        &:last-child .water__progress__item__wrapper::after {
+            content: none;
+        }
+    }
+}

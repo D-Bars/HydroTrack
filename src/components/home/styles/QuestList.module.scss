@@ -1,0 +1,38 @@
+@use '../../../styles/global.scss' as *;
+
+.quest__body {
+    gap: 2vh;
+
+    @include box(100%);
+    @include flex__box(column);
+
+    & .quest__item {
+        gap: 2vw;
+
+        @include box(100%);
+        @include flex__box(row, flex-start, space-between);
+        @include text(100%, 600, $fontColorMain);
+
+
+        & .quest__status::after {
+            content: "\f017";
+            position: relative;
+            padding: 0.5vh 0.3vw;
+            border-radius: 50%;
+            @include text(100%, 800, $fontColorSup, 'Font Awesome 5 Free');
+        }
+
+
+        & .quest__status.quest__completed {
+            border-radius: 50%;
+
+            &::after {
+                content: "\f00c";
+                background-color: rgb(30, 47, 30);
+                @include text(100%, 800, rgb(3, 186, 3), 'Font Awesome 5 Free');
+            }
+        }
+
+
+    }
+}

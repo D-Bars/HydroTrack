@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import cl from "../../pages/styles/Home.module.scss";
+import cl from "./styles/QuestList.module.scss";
 import { formatDateKey } from "../../utils/date/date";
 import { useWaterStore } from "../../store/waterStore";
 import clsx from "clsx";

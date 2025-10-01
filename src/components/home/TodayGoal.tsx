@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import BottleProgres from "../BottleProgres/BottleProgres";
-import cl from "../../pages/styles/Home.module.scss";
+import cl from "./styles/TodayGoal.module.scss";
 import { isSameDay } from "../../utils/date/date";
 import { useWaterStore } from "../../store/waterStore";
 

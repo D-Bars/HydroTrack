@@ -1,0 +1,40 @@
+@use '../../../styles/global.scss' as *;
+
+
+.calendar__body {
+    gap: 1vh;
+    flex-wrap: wrap;
+
+    @include box(100%);
+    @include flex__box(row, center, space-between);
+
+    & .calendar__item {
+        white-space: nowrap;
+        text-align: center;
+        gap: 2vh;
+
+        @include flex__box(column, center, center);
+        @include text(105%, 600, $fontColorSup);
+    }
+}
+
+
+.calendar__body .calendar__item__active {
+    & .item__day__week {
+        color: #FFF;
+
+        &::after {
+            content: "\f043";
+            margin-top: 1vh;
+            @include text(90%, 800, $color2, 'Font Awesome 5 Free');
+        }
+    }
+
+    & .item__day__month {
+        color: #FFF;
+        background-color: $color2;
+        border-radius: 5px;
+
+        @include box(70%);
+    }
+}

@@ -1,0 +1,38 @@
+@use '../../../styles/global.scss' as *;
+
+.today__goal__block{
+    gap: 2vh;
+
+    @include box(30%);
+    @include flex__box(column, center, flex-end);
+
+    & .add__water{
+        padding: 1vh 2vw;
+        background-color: transparent;
+        border-radius: 10px;
+        outline: 1px solid $color3;
+        outline-offset: -1px;
+        cursor: pointer;
+
+        @include text(120%, 600, $fontColorMain);
+    }
+
+    & h3{
+        cursor: default;
+
+        @include text(120%, 800, $fontColorMain);
+    }
+}
+
+.today__goal__progres{
+    gap: 0.7vw;
+    line-height: 1;
+
+    @include flex__box(row, flex-end, center);
+    @include text(130%, 600, $fontColorMain);
+
+    & .goal__value__limit{
+        font-weight: 800;
+        color: $color3;
+    }
+}

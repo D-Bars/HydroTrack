@@ -226,3 +226,34 @@ h2 {
   outline: 1px solid $color3;
   outline-offset: -1px;
 }
+
+// custom home page mixins
+
+.additional__info__head__line {
+    padding: 1vh 0;
+
+    @include box(100%);
+    @include flex__box(row, center, space-between);
+
+    & h3 {
+        cursor: default;
+
+        @include text(120%, 800, $fontColorMain);
+    }
+
+    & a {
+        align-self: flex-end;
+        cursor: pointer;
+
+        @include text(100%, 600, $fontColorSup);
+    }
+}
+
+.additional__info__box {
+    gap: 1vh;
+
+    @include flex__box(column);
+    @include box(100%, 2.5%);
+}
+
+// custom home page mixins
