@@ -1,29 +1,94 @@
 @use '../../../styles/global.scss' as *;
 
-.user__btn{
+.userHeader {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.user__btn {
     gap: 0.7vw;
     background: inherit;
     cursor: pointer;
     white-space: nowrap;
-    
+
+    border: none;
+    padding: 0;
+
     @include flex__box(row, center, flex-end);
 }
 
-.avatar__wrapper__img{
-    background-color: #FFF;
+.avatar__wrapper__img {
+    background-color: #fff;
     border-radius: 50%;
-    border: 1px solid #FFF;
+    border: 1px solid #fff;
     flex: 0 0 auto;
 
     @include img_box(30px, auto);
 }
 
-.user__name{
-    @include text(120%, 600, #FFF);
+.user__name {
+    @include text(120%, 600, #fff);
 }
 
-.arrow__wrapper__img{
+.arrow__wrapper__img {
     flex: 0 0 auto;
+    transition: .2s ease;
 
     @include img_box(10px, auto);
+}
+
+.arrow__wrapper__img_open {
+    transform: rotate(180deg);
+}
+
+.user__modal {
+    position: absolute;
+    top: calc(100% + 1.5vh);
+    right: 0;
+    padding: 1.5vh 3%;
+    border-radius: 5px;
+    background: $color1;
+    outline: 1px solid #333;
+    outline-offset: -1px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: .2s ease;
+    pointer-events: none;
+
+    @include box(100%, 3%);
+    @include flex__box(column, flex-end);
+}
+
+.user__modal_open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.user__actions__list {
+    gap: 1vh;
+    white-space: nowrap;
+
+    @include flex__box(column, flex-start);
+    @include box(100%);
+}
+
+.user__actions__item {
+    padding: 0.3vh 0.5vw;
+    gap: 0.7vw;
+
+    @include flex__box(row, center);
+}
+
+.user__actions__icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: #FFF;
+}
+
+.user__actions__label {
+    @include text(100%, 500, #fff);
 }

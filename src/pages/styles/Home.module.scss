@@ -1,0 +1,252 @@
+@use '../../styles/global.scss' as *;
+
+// custom home page mixins
+
+.additional__info__head__line {
+    padding: 1vh 0;
+
+    @include box(100%);
+    @include flex__box(row, center, space-between);
+
+    & h3 {
+        cursor: default;
+
+        @include text(120%, 800, $fontColorMain);
+    }
+
+    & a {
+        align-self: flex-end;
+        cursor: pointer;
+
+        @include text(100%, 600, $fontColorSup);
+    }
+}
+
+.additional__info__box {
+    gap: 1vh;
+
+    @include flex__box(column);
+    @include box(100%, 2.5%);
+}
+
+// custom home page mixins
+
+.home__block {
+    gap: 3%;
+
+    position: relative;
+    min-height: 90dvh;
+
+    @include flex__box(row, flex-start);
+    @include box(100%, 1%, auto, 5vh);
+}
+
+.additional__info__block {
+    gap: 2vh;
+
+    @include box(30%);
+    @include flex__box(column);
+}
+
+.water__progress__body {
+    gap: 1vh;
+
+    @include box(100%);
+    @include flex__box(column, flex-start);
+
+    & .water__progress__item {
+        gap: 0.7vw;
+
+        @include flex__box(row, center);
+        @include box(100%);
+
+        & .item__day {
+            flex: 0 0 85px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1vh 1vw;
+            background-color: #333;
+            border-radius: 10px;
+            white-space: nowrap;
+            text-align: center;
+            cursor: default;
+
+            @include text(100%, 600, $fontColorSup);
+        }
+
+        & .water__progress__item__wrapper {
+            width: 100%;
+            position: relative;
+
+            @include flex__box(row, center, space-between);
+            @include text(100%, 600, $fontColorMain);
+
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                height: 1px;
+                background: #333;
+                width: 100%;
+            }
+        }
+
+        &:last-child .water__progress__item__wrapper::after {
+            content: none;
+        }
+    }
+}
+
+
+
+.calendar__body {
+    gap: 1vh;
+    flex-wrap: wrap;
+
+    @include box(100%);
+    @include flex__box(row, center, space-between);
+
+    & .calendar__item {
+        white-space: nowrap;
+        text-align: center;
+        gap: 2vh;
+
+        @include flex__box(column, center, center);
+        @include text(105%, 600, $fontColorSup);
+    }
+}
+
+
+.calendar__body .calendar__item__active {
+    & .item__day__week {
+        color: #FFF;
+
+        &::after {
+            content: "\f043";
+            margin-top: 1vh;
+            @include text(90%, 800, $color2, 'Font Awesome 5 Free');
+        }
+    }
+
+    & .item__day__month {
+        color: #FFF;
+        background-color: $color2;
+        border-radius: 5px;
+
+        @include box(70%);
+    }
+}
+
+
+
+.quest__body {
+    gap: 2vh;
+
+    @include box(100%);
+    @include flex__box(column);
+
+    & .quest__item {
+        gap: 2vw;
+
+        @include box(100%);
+        @include flex__box(row, flex-start, space-between);
+        @include text(100%, 600, $fontColorMain);
+
+
+        & .quest__status::after {
+            content: "\f017";
+            position: relative;
+            padding: 0.5vh 0.3vw;
+            border-radius: 50%;
+            @include text(100%, 800, $fontColorSup, 'Font Awesome 5 Free');
+        }
+
+
+        & .quest__status.quest__completed {
+            border-radius: 50%;
+
+            &::after {
+                content: "\f00c";
+                background-color: rgb(30, 47, 30);
+                @include text(100%, 800, rgb(3, 186, 3), 'Font Awesome 5 Free');
+            }
+        }
+
+
+    }
+}
+
+
+
+.coins__body{
+    gap: 0.5vw;
+
+    @include box(100%);
+    @include flex__box(row, center, flex-start);
+
+    & .coins__value{
+        @include text(130%, 800, $fontColorMain);
+    }
+
+    & .coins__img__wrapper{
+        @include img_box(3vw);
+    }
+}
+
+
+.hydro__avatar__block {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    @include box(30%, 0);
+    
+    & .hydro__avatar__wrapper__img {
+        @include img_box(95%, 100%);
+
+        & img {
+            transition: .4s;
+        }
+    }
+}
+
+
+.today__goal__block{
+    gap: 2vh;
+
+    @include box(30%);
+    @include flex__box(column, center, flex-end);
+
+    & .add__water{
+        padding: 1vh 2vw;
+        background-color: transparent;
+        border-radius: 10px;
+        outline: 1px solid $color3;
+        outline-offset: -1px;
+        cursor: pointer;
+
+        @include text(120%, 600, $fontColorMain);
+    }
+
+    & h3{
+        cursor: default;
+
+        @include text(120%, 800, $fontColorMain);
+    }
+}
+
+.today__goal__progres{
+    gap: 0.7vw;
+    line-height: 1;
+
+    @include flex__box(row, flex-end, center);
+    @include text(130%, 600, $fontColorMain);
+
+    & .goal__value__limit{
+        font-weight: 800;
+        color: $color3;
+    }
+}

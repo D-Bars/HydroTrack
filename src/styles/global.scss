@@ -16,7 +16,7 @@ $mfont_size: 4vw;
 // MIXINS
 @mixin text($font_size: 100%, $weight: 400, $color: $fontColor, $fontName: $font1) {
   & {
-    font-size: math.div($font_size, 100%) * $font_size; 
+    font-size: math.div($font_size, 100%) * $font_size;
     font-family: $fontName;
     font-weight: $weight;
     color: $color;
@@ -24,14 +24,14 @@ $mfont_size: 4vw;
 
   @media screen and (max-width: 800px) {
     & {
-      font-size: math.div($mfont_size, 100%) * $font_size; 
+      font-size: math.div($mfont_size, 100%) * $font_size;
     }
   }
 }
 
 @mixin box($width: 100%, $padding: 0%, $height: auto, $margin_top: 0) {
   & {
-    width: math.div($width - $padding * 2, 1); 
+    width: math.div($width - $padding * 2, 1);
     padding-left: $padding;
     padding-right: $padding;
     margin-top: $margin_top;
@@ -55,6 +55,7 @@ $mfont_size: 4vw;
     outline-offset: -2px;
 
     img {
+      display: flex;
       object-fit: $fit;
       height: 100%;
       width: 100%;
@@ -103,6 +104,7 @@ $mfont_size: 4vw;
     justify-content: $justify_content;
   }
 }
+
 // MIXINS
 
 /* BASIC */
@@ -193,8 +195,7 @@ p {
 }
 
 ul {
-  margin-top: 0.3vw;
-  margin-left: 1%;
+  margin: 0;
 }
 
 ul,
@@ -209,9 +210,19 @@ nav {
   justify-content: center;
 }
 
-h2{
+h2 {
   text-transform: uppercase;
   cursor: default;
 }
 
 /* BASIC */
+
+
+/* CUSTOM MIXINS */
+.wrapper__item {
+  padding: 2vh 0;
+  background-color: #131519;
+  border-radius: 15px;
+  outline: 1px solid $color3;
+  outline-offset: -1px;
+}
