@@ -1,4 +1,8 @@
-export default function BottleWithWater() {
+type BottleWithWaterProps = {
+    progress: number;
+};
+
+export default function BottleWithWater({ progress }: BottleWithWaterProps) {
     const vb = { w: 200, h: 400 };
 
     const bottlePath = `
@@ -18,11 +22,11 @@ export default function BottleWithWater() {
   `;
 
     // lvl water %
-    const progress = 50;
+    const level = Math.min(100, Math.max(0, progress));
     const fillTopY = 20;
     const fillBottomY = 380;
     const fillHeight = fillBottomY - fillTopY;
-    const levelY = fillBottomY - (fillHeight * progress) / 100;
+    const levelY = fillBottomY - (fillHeight * level) / 100;
 
     return (
         <div
