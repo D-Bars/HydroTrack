@@ -79,17 +79,22 @@
 .user__actions__item {
     padding: 0.3vh 0.5vw;
     gap: 0.7vw;
+    cursor: pointer;
 
     @include flex__box(row, center);
 }
 
 .user__actions__icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
-    background: #FFF;
+    position: relative;
+
+    @include img_box(20px, auto);
 }
 
 .user__actions__label {
     @include text(100%, 500, #fff);
+}
+
+button.user__actions__label {
+    background: none;
+    cursor: pointer;
 }

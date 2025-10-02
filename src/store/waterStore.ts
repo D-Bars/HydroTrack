@@ -1,34 +1,138 @@
 import { create } from "zustand";
-import type { WaterEntry, WaterState } from "../types/Water";
-import {getRandomQuest} from "../utils/quest/getRandomQuest";
+import type { WaterEntry } from "../types/Water";
+import { getRandomQuest } from "../utils/quest/getRandomQuest";
 import { getDailyQuests } from "../utils/quest/getDaileQuests";
+import { formatDateKey } from "../utils/date/date";
+import type { Quest } from "../types/Quest";
 
-const initialEntries: WaterEntry[] = [];
+interface WaterState {
+  entries: WaterEntry[];
+  dailyGoalMl: number;
+  quests: Quest[];
+  visibleQuestIds: string[];
+  questsGeneratedOn: string;
+
+  addEntry: (amount: number, date?: Date) => void;
+  syncDailyQuests: () => void;
+  clearGameData: () => void;
+}
+
+const userGameDataStorageKey = import.meta.env.VITE_USER_GAME_DATA;
+
+const sortByTimeDesc = (list: WaterEntry[]) =>
+  [...list].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+const syncDaily = (
+  entries: WaterEntry[],
+  visibleQuestIds: string[],
+  questsGeneratedOn: string
+) => {
+  const today = formatDateKey(new Date());
+  const needNew = questsGeneratedOn !== today;
+
+  return {
+    quests: getDailyQuests(entries),
+    visibleQuestIds: needNew ? getRandomQuest(2) : visibleQuestIds,
+    questsGeneratedOn: needNew ? today : questsGeneratedOn,
+  };
+};
+
+const loadStateToLocalStore = () => {
+  if (typeof window === "undefined") return undefined;
+  try {
+    const raw = localStorage.getItem(userGameDataStorageKey);
+    return raw ? (JSON.parse(raw) as Partial<WaterState>) : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+const saveStateToLocalStore = (state: Pick<WaterState,
+  "entries" | "dailyGoalMl" | "visibleQuestIds" | "questsGeneratedOn">) => {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(userGameDataStorageKey, JSON.stringify(state));
+  } catch {
+    console.error("Failed to write state to localStorage");
+  }
+};
+
+const deleteStateToLocalStore = () => {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(userGameDataStorageKey);
+  } catch {
+    console.error("Failed to clear state from localStorage");
+  }
+};
+
+const persisted = loadStateToLocalStore();
+
+const initialEntries: WaterEntry[] = sortByTimeDesc(persisted?.entries ?? []);
+const initialDailyGoal = persisted?.dailyGoalMl ?? 3000;
+const initialVisible = persisted?.visibleQuestIds ?? getRandomQuest(2);
+const initialGeneratedOn = persisted?.questsGeneratedOn ?? formatDateKey(new Date());
 const initialQuests = getDailyQuests(initialEntries);
 
-export const useWaterStore = create<WaterState>()((set) => ({
+export const useWaterStore = create<WaterState>()((set, get) => ({
   entries: initialEntries,
-  dailyGoalMl: 3000,
+  dailyGoalMl: initialDailyGoal,
+
   quests: initialQuests,
-  visibleQuestIds: getRandomQuest(2),
+  visibleQuestIds: initialVisible,
+  questsGeneratedOn: initialGeneratedOn,
 
   addEntry: (amount: number, date = new Date()) => {
-    const timestamp = date.toISOString();
     const entry: WaterEntry = {
       id: `entry-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       amount,
-      timestamp,
+      timestamp: date.toISOString(),
     };
 
     set((state) => {
-      const entries = [entry, ...state.entries].sort(
-        (a, b) =>
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-      );
+      const entries = sortByTimeDesc([entry, ...state.entries]);
+      const synced = syncDaily(entries, state.visibleQuestIds, state.questsGeneratedOn);
+      return { entries, ...synced };
+    });
+    saveStateToLocalStore({
+      entries: get().entries,
+      dailyGoalMl: get().dailyGoalMl,
+      visibleQuestIds: get().visibleQuestIds,
+      questsGeneratedOn: get().questsGeneratedOn,
+    });
+  },
 
-      const quests = getDailyQuests(entries);
+  syncDailyQuests: () => {
+    set((state) => ({
+      ...syncDaily(state.entries, state.visibleQuestIds, state.questsGeneratedOn),
+    }));
+    saveStateToLocalStore({
+      entries: get().entries,
+      dailyGoalMl: get().dailyGoalMl,
+      visibleQuestIds: get().visibleQuestIds,
+      questsGeneratedOn: get().questsGeneratedOn,
+    });
+  },
 
-      return { entries, quests };
+  clearGameData: () => {
+    deleteStateToLocalStore();
+    set({
+      entries: [],
+      dailyGoalMl: 3000,
+      quests: getDailyQuests([]),
+      visibleQuestIds: getRandomQuest(2),
+      questsGeneratedOn: formatDateKey(new Date()),
     });
   },
 }));
+
+(() => {
+  const today = formatDateKey(new Date());
+  if (useWaterStore.getState().questsGeneratedOn !== today) {
+    useWaterStore.getState().syncDailyQuests();
+  } else {
+    const { entries, dailyGoalMl, visibleQuestIds, questsGeneratedOn } = useWaterStore.getState();
+    saveStateToLocalStore({ entries, dailyGoalMl, visibleQuestIds, questsGeneratedOn });
+  }
+})();
+

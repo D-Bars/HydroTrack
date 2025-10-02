@@ -1,0 +1,79 @@
+@use "../../styles/global.scss" as *;
+
+.profile {
+    padding: 5vh 5vw;
+    display: flex;
+    justify-content: center;
+}
+
+.profile__card {
+    position: relative;
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 18px;
+    padding: 4vh 5%;
+    gap: 3vh;
+
+    @include box(50%, 5%);
+    @include flex__box(column, center, center);
+}
+
+.profile__back__home{
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 18px 0 8px 0;
+    padding: 1vh 2vw;
+    background-color: $color2;
+    gap: 0.5vw;
+    transition: .4s;
+
+    @include text(100%, 500, $fontColorMain);
+    @include flex__box(row, center, center);
+
+    &::before{
+        content: "\f060";
+        
+        @include text(90%, 900, $fontColorMain, "Font Awesome 6 Free");
+    }
+
+    &:hover{
+        background-color: darken($color2, 10%);
+    }
+}
+
+.profile__head {
+    gap: 1vh;
+
+    @include flex__box(column, center);
+}
+
+.profile__title {
+    @include text(180%, 700, #fff);
+}
+
+.profile__subtitle {
+    @include text(110%, 500, rgba(255, 255, 255, 0.8));
+}
+
+.profile__details {
+    gap: 1.5vh;
+
+    @include flex__box(column, flex-start);
+    @include box(60%);
+}
+
+.profile__infoRow {
+    gap: 1.5vw;
+    padding-bottom: 1vh;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    white-space: nowrap;
+
+    @include text(110%, 600, $fontColorMain);
+    @include box(100%);
+    @include flex__box(row, center,space-between);
+
+    &:last-child {
+        border-bottom: none;
+    }
+}

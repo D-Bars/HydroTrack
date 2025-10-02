@@ -2,13 +2,22 @@ import { useState } from "react";
 import cl from "./UserHeader.module.scss";
 import useUserStore from "../../../store/userStore";
 import { getAvatarIcon } from "../../../utils/avatar/getAvatarIco";
+import { Link, useNavigate } from "react-router-dom";
+import { useWaterStore } from "../../../store/waterStore";
 
-const ModalItems = [
-    { id: 1, label: "Profile" },
-    { id: 2, label: "Settings" },
-    { id: 3, label: "Logout" },
-];
-
+type ModalItem =
+    | {
+        id: string;
+        label: string;
+        src_ico: string;
+        to: string;
+    }
+    | {
+        id: string;
+        label: string;
+        src_ico: string;
+        action: () => void;
+    };
 
 const UserHeader = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,12 +25,39 @@ const UserHeader = () => {
     const nickname = useUserStore((state) => state.nickname);
     const gender = useUserStore((state) => state.gender);
     const isRegistered = useUserStore((state) => state.isRegistered);
+    const resetUser = useUserStore((state) => state.resetUser);
+    const {clearGameData} = useWaterStore()
+    const navigate = useNavigate();
 
     const handleToggle = () => {
         if (isAnimating) return;
         setIsOpen((prev) => !prev);
         setIsAnimating(true);
     };
+
+    const handleLogout = () => {
+        const registrationStorageKey = import.meta.env
+            .VITE_STORAGE_KEY;
+        const userGameDataStorageKey = import.meta.env
+            .VITE_USER_GAME_DATA;
+
+        if (registrationStorageKey) {
+            localStorage.removeItem(registrationStorageKey);
+        }
+        if (userGameDataStorageKey) {
+            localStorage.removeItem(userGameDataStorageKey);
+        }
+
+        resetUser();
+        clearGameData();
+        setIsOpen(false);
+        navigate("/register");
+    };
+
+    const modalItems: ModalItem[] = [
+        { id: "profile", label: "Profile", src_ico: '/Ico/user.png', to: "/profile" },
+        { id: "logout", label: "Logout", src_ico: '/Ico/logout.png', action: handleLogout },
+    ];
 
     const avatarSrc = getAvatarIcon(gender);
     const greeting = isRegistered && nickname ? `Hi, ${nickname}` : "Hi there";
@@ -50,10 +86,31 @@ const UserHeader = () => {
                 onTransitionEnd={() => setIsAnimating(false)}
             >
                 <ul className={cl.user__actions__list}>
-                    {ModalItems.map((item) => (
+                    {modalItems.map((item) => (
                         <li key={item.id} className={cl.user__actions__item}>
-                            <span className={cl.user__actions__icon} aria-hidden={!isOpen} />
-                            <span className={cl.user__actions__label}>{item.label}</span>
+                            <div className={cl.user__actions__icon}>
+                                <div className={cl.background__ico}></div>
+                                <img src={item.src_ico} />
+                            </div>
+                            {"to" in item ? (
+                                <Link
+                                    to={item.to}
+                                    className={cl.user__actions__label}
+                                    onClick={() => {
+                                        setIsOpen(false);
+                                    }}
+                                >
+                                    {item.label}
+                                </Link>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className={cl.user__actions__label}
+                                    onClick={item.action}
+                                >
+                                    {item.label}
+                                </button>
+                            )}
                         </li>
                     ))}
                 </ul>

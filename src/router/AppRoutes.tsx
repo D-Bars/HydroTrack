@@ -1,9 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Calendar from "../pages/Calendar";
 import Home from "../pages/Home";
-import Settings from "../pages/Settings";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "../pages/Register";
+import Profile from "../pages/Profile";
 
 const AppRoutes = () => {
     return (
@@ -18,18 +17,10 @@ const AppRoutes = () => {
                 }
             />
             <Route
-                path="/calendar"
+                path="/profile"
                 element={
                     <ProtectedRoute>
-                        <Calendar />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/settings"
-                element={
-                    <ProtectedRoute>
-                        <Settings />
+                        <Profile />
                     </ProtectedRoute>
                 }
             />

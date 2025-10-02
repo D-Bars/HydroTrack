@@ -10,7 +10,12 @@ const formatMlToLiters = (value: number) => {
     return `${Number.isInteger(liters) ? liters : liters.toFixed(1)}L`;
 };
 
-const TodayGoal = () => {
+type TodayGoalProps = {
+    onWaterIntake?: () => void;
+    isAnimating?: boolean;
+};
+
+const TodayGoal = ({ onWaterIntake, isAnimating = false }: TodayGoalProps) => {
     const entries = useWaterStore((state) => state.entries);
     const dailyGoal = useWaterStore((state) => state.dailyGoalMl);
     const addEntry = useWaterStore((state) => state.addEntry);
@@ -32,6 +37,7 @@ const TodayGoal = () => {
 
     const handleAddWater = () => {
         addEntry(200);
+        onWaterIntake?.();
     };
 
     return (
@@ -43,7 +49,12 @@ const TodayGoal = () => {
                 <span>/</span>
                 <div className={cl.goal__value__limit}>{formatMlToLiters(dailyGoal)}</div>
             </div>
-            <button className={cl.add__water} type="button" onClick={handleAddWater}>
+            <button
+                className={cl.add__water}
+                type="button"
+                onClick={handleAddWater}
+                disabled={isAnimating}
+            >
                 add water
             </button>
         </div>

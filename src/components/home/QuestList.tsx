@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import cl from "./styles/QuestList.module.scss";
 import { formatDateKey } from "../../utils/date/date";
@@ -8,6 +8,11 @@ import clsx from "clsx";
 const QuestList = () => {
   const quests = useWaterStore((state) => state.quests);
   const visibleIds = useWaterStore((state) => state.visibleQuestIds);
+  const syncDailyQuests = useWaterStore((state) => state.syncDailyQuests);
+
+  useEffect(() => {
+    syncDailyQuests();
+  }, [syncDailyQuests]);
 
   const todayKey = useMemo(() => formatDateKey(new Date()), []);
 
