@@ -3,6 +3,7 @@ type BottleWithWaterProps = {
 };
 
 export default function BottleWithWater({ progress }: BottleWithWaterProps) {
+    console.log(progress);
     const vb = { w: 200, h: 400 };
 
     const bottlePath = `
@@ -22,11 +23,12 @@ export default function BottleWithWater({ progress }: BottleWithWaterProps) {
   `;
 
     // lvl water %
-    const level = Math.min(100, Math.max(0, progress));
+    const percent = Math.min(100, Math.max(0, progress));
     const fillTopY = 20;
     const fillBottomY = 380;
     const fillHeight = fillBottomY - fillTopY;
-    const levelY = fillBottomY - (fillHeight * level) / 100;
+
+    const levelY = fillBottomY - (fillHeight * percent) / 100;
 
     return (
         <div

@@ -6,6 +6,7 @@ interface UserState {
     age?: number;
     weight?: number;
     gender: Gender;
+    recommendedWaterMl?: number;
     isRegistered: boolean;
 
     setUser:
@@ -14,13 +15,19 @@ interface UserState {
         gender: Gender;
         age?: number;
         weight?: number;
+        recommendedWaterMl?: number;
     }) => void;
+    updateUser: (
+        payload: Partial<
+            Pick<UserState, "nickname" | "age" | "weight" | "gender" | "recommendedWaterMl">
+        >,
+    ) => void;
     resetUser: () => void;
 }
 
 const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
 
-const loadUser = (): Omit<UserState, "setUser" | "resetUser"> => {
+const loadUser = (): Omit<UserState, "setUser" | "resetUser" | "updateUser"> => {
     try {
         const data = localStorage.getItem(STORAGE_KEY);
         if (!data) {
@@ -29,6 +36,7 @@ const loadUser = (): Omit<UserState, "setUser" | "resetUser"> => {
                 age: undefined,
                 weight: undefined,
                 gender: '',
+                recommendedWaterMl: undefined,
                 isRegistered: false,
             };
         }
@@ -39,6 +47,7 @@ const loadUser = (): Omit<UserState, "setUser" | "resetUser"> => {
             age: undefined,
             weight: undefined,
             gender: '',
+            recommendedWaterMl: undefined,
             isRegistered: false,
         };
     }
@@ -47,16 +56,41 @@ const loadUser = (): Omit<UserState, "setUser" | "resetUser"> => {
 export const useUserStore = create<UserState>((set) => ({
     ...loadUser(),
 
-    setUser: ({ nickname, gender, age, weight }) => {
+    setUser: ({ nickname, gender, age, weight, recommendedWaterMl }) => {
         const newState = {
             nickname,
             gender,
             age,
             weight,
+            recommendedWaterMl,
             isRegistered: true,
         };
         set(newState);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({
+                ...newState,
+            }),
+        );
+    },
+
+    updateUser: (payload) => {
+        set((state) => {
+            const newState = { ...state, ...payload };
+            const { nickname, age, weight, gender, recommendedWaterMl, isRegistered } = newState;
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify({
+                    nickname,
+                    age,
+                    weight,
+                    gender,
+                    recommendedWaterMl,
+                    isRegistered,
+                }),
+            );
+            return newState;
+        });
     },
 
     resetUser: () => {
@@ -65,6 +99,7 @@ export const useUserStore = create<UserState>((set) => ({
             age: undefined,
             weight: undefined,
             gender: '' as Gender,
+            recommendedWaterMl: undefined,
             isRegistered: false,
         };
         set(resetState);

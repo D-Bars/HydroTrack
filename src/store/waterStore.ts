@@ -13,6 +13,7 @@ interface WaterState {
   questsGeneratedOn: string;
 
   addEntry: (amount: number, date?: Date) => void;
+  setDailyGoal: (amount: number) => void;
   syncDailyQuests: () => void;
   clearGameData: () => void;
 }
@@ -97,6 +98,16 @@ export const useWaterStore = create<WaterState>()((set, get) => ({
     saveStateToLocalStore({
       entries: get().entries,
       dailyGoalMl: get().dailyGoalMl,
+      visibleQuestIds: get().visibleQuestIds,
+      questsGeneratedOn: get().questsGeneratedOn,
+    });
+  },
+
+  setDailyGoal: (amount: number) => {
+    set({ dailyGoalMl: amount });
+    saveStateToLocalStore({
+      entries: get().entries,
+      dailyGoalMl: amount,
       visibleQuestIds: get().visibleQuestIds,
       questsGeneratedOn: get().questsGeneratedOn,
     });

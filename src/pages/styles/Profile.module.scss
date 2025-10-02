@@ -18,7 +18,7 @@
     @include flex__box(column, center, center);
 }
 
-.profile__back__home{
+.profile__back__home {
     position: absolute;
     top: 0;
     left: 0;
@@ -31,13 +31,13 @@
     @include text(100%, 500, $fontColorMain);
     @include flex__box(row, center, center);
 
-    &::before{
+    &::before {
         content: "\f060";
-        
+
         @include text(90%, 900, $fontColorMain, "Font Awesome 6 Free");
     }
 
-    &:hover{
+    &:hover {
         background-color: darken($color2, 10%);
     }
 }
@@ -71,9 +71,68 @@
 
     @include text(110%, 600, $fontColorMain);
     @include box(100%);
-    @include flex__box(row, center,space-between);
+    @include flex__box(row, center, space-between);
 
     &:last-child {
         border-bottom: none;
+    }
+}
+
+.profile__editButton {
+    margin-top: 2vh;
+    align-self: flex-end;
+    padding: 1vh 2vw;
+    border-radius: 10px;
+    background-color: $color3;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: lighten($color3, 10%);
+    }
+}
+
+.profile__form {
+    gap: 1.5vh;
+
+    @include flex__box(column, stretch, stretch);
+    @include box(60%);
+}
+
+.profile__formButtons {
+    margin-top: 1vh;
+    gap: 1vw;
+
+    @include flex__box(row, flex-end);
+}
+
+.profile__cancel,
+.profile__save {
+    padding: 1vh 2vw;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile__cancel {
+    background-color: transparent;
+    color: $fontColorMain;
+    border: 1px solid $color3;
+
+    &:hover {
+        background-color: rgba($color3, 0.15);
+    }
+}
+
+.profile__save {
+    background-color: $color3;
+    color: #000;
+    border: none;
+
+    &:hover {
+        background-color: lighten($color3, 10%);
     }
 }

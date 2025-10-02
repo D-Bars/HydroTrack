@@ -1,12 +1,12 @@
 @use '../../../styles/global.scss' as *;
 
-.today__goal__block{
+.today__goal__block {
     gap: 2vh;
 
     @include box(30%);
     @include flex__box(column, center, flex-end);
 
-    & .add__water{
+    & .add__water {
         padding: 1vh 2vw;
         background-color: transparent;
         border-radius: 10px;
@@ -17,21 +17,106 @@
         @include text(120%, 600, $fontColorMain);
     }
 
-    & h3{
+    & h3 {
         cursor: default;
 
         @include text(120%, 800, $fontColorMain);
     }
 }
 
-.today__goal__progres{
+.add__water__wrapper {
+    position: relative;
+    width: 100%;
+
+    @include flex__box(column, center, flex-end);
+}
+
+.add__water__panel {
+    padding: 1.5vh 2.5%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    gap: 1vh;
+
+    @include flex__box(column, stretch);
+    @include box(100%, 2.5%, auto, 1vh);
+}
+
+.add__water__panelTitle {
+    @include text(100%, 600, $fontColorMain);
+}
+
+.add__water__options {
+    gap: 0.5vw;
+    flex-wrap: wrap;
+
+    @include flex__box(row, flex-start, center);
+}
+
+.add__water__option,
+.add__water__option_selected {
+    padding: 0.8vh 1.2vw;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    @include text(90%, 600, $fontColorMain);
+}
+
+.add__water__option_selected {
+    background-color: $color3;
+    color: #000;
+    border-color: $color3;
+}
+
+.add__water__custom {
+    gap: 0.5vh;
+
+    @include flex__box(column, flex-start);
+    @include text(90%, 500, $fontColorMain);
+
+    & input {
+        padding: 0.5vh 2.5%;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: transparent;
+        color: $fontColorMain;
+
+        @include box(100%, 2.5%);
+    }
+}
+
+.add__water__confirm {
+    align-self: flex-end;
+    padding: 0.8vh 1.8vw;
+    border-radius: 10px;
+    background-color: $color3;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+        background-color: lighten($color3, 10%);
+    }
+}
+
+.today__goal__progres {
     gap: 0.7vw;
     line-height: 1;
 
     @include flex__box(row, flex-end, center);
     @include text(130%, 600, $fontColorMain);
 
-    & .goal__value__limit{
+    & .goal__value__limit {
         font-weight: 800;
         color: $color3;
     }

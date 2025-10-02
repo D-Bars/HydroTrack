@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import BottleProgres from "../BottleProgres/BottleProgres";
 import cl from "./styles/TodayGoal.module.scss";
@@ -6,8 +6,8 @@ import { isSameDay } from "../../utils/date/date";
 import { useWaterStore } from "../../store/waterStore";
 
 const formatMlToLiters = (value: number) => {
-    const liters = value / 1000;
-    return `${Number.isInteger(liters) ? liters : liters.toFixed(1)}L`;
+  const liters = value / 1000;
+  return `${Number.isInteger(liters) ? liters : Number(liters.toFixed(2))}L`;
 };
 
 type TodayGoalProps = {
@@ -15,10 +15,16 @@ type TodayGoalProps = {
     isAnimating?: boolean;
 };
 
+const standardAmounts = [150, 200, 250, 300, 350, 400];
+
 const TodayGoal = ({ onWaterIntake, isAnimating = false }: TodayGoalProps) => {
     const entries = useWaterStore((state) => state.entries);
     const dailyGoal = useWaterStore((state) => state.dailyGoalMl);
     const addEntry = useWaterStore((state) => state.addEntry);
+
+    const [isSelectorOpen, setIsSelectorOpen] = useState(false);
+    const [selectedAmount, setSelectedAmount] = useState<number>(standardAmounts[1]);
+    const [customAmount, setCustomAmount] = useState("");
 
     const todayIntake = useMemo(() => {
         const today = new Date();
@@ -35,9 +41,35 @@ const TodayGoal = ({ onWaterIntake, isAnimating = false }: TodayGoalProps) => {
         return Math.min(100, Math.round((todayIntake / dailyGoal) * 100));
     }, [dailyGoal, todayIntake]);
 
+    const isAmountValid = useMemo(() => {
+        if (customAmount.trim()) {
+            const parsed = Number(customAmount);
+            return Number.isFinite(parsed) && parsed > 0;
+        }
+
+        return Number.isFinite(selectedAmount) && selectedAmount > 0;
+    }, [customAmount, selectedAmount]);
+
     const handleAddWater = () => {
-        addEntry(200);
+        setIsSelectorOpen((prev) => !prev);
+    };
+
+    const handleConfirm = () => {
+        const amount = customAmount.trim() ? Number(customAmount) : selectedAmount;
+
+        if (!Number.isFinite(amount) || amount <= 0) {
+            return;
+        }
+
+        addEntry(amount);
         onWaterIntake?.();
+        setIsSelectorOpen(false);
+        setCustomAmount("");
+        if (!customAmount.trim() && standardAmounts.includes(amount)) {
+            setSelectedAmount(amount);
+        } else {
+            setSelectedAmount(standardAmounts[1]);
+        }
     };
 
     return (
@@ -49,14 +81,59 @@ const TodayGoal = ({ onWaterIntake, isAnimating = false }: TodayGoalProps) => {
                 <span>/</span>
                 <div className={cl.goal__value__limit}>{formatMlToLiters(dailyGoal)}</div>
             </div>
-            <button
-                className={cl.add__water}
-                type="button"
-                onClick={handleAddWater}
-                disabled={isAnimating}
-            >
-                add water
-            </button>
+            <div className={cl.add__water__wrapper}>
+                <button
+                    className={cl.add__water}
+                    type="button"
+                    onClick={handleAddWater}
+                >
+                    add water
+                </button>
+                {isSelectorOpen && (
+                    <div className={cl.add__water__panel}>
+                        <span className={cl.add__water__panelTitle}>Select amount</span>
+                        <div className={cl.add__water__options}>
+                            {standardAmounts.map((amount) => (
+                                <button
+                                    key={amount}
+                                    type="button"
+                                    className={
+                                        amount === selectedAmount && !customAmount
+                                            ? cl.add__water__option_selected
+                                            : cl.add__water__option
+                                    }
+                                    onClick={() => {
+                                        setSelectedAmount(amount);
+                                        setCustomAmount("");
+                                    }}
+                                >
+                                    {amount} ml
+                                </button>
+                            ))}
+                        </div>
+                        <label className={cl.add__water__custom}>
+                            <span>Your amount (ml)</span>
+                            <input
+                                type="text"
+                                value={customAmount}
+                                name="qty__water"
+                                onChange={(event) =>
+                                    setCustomAmount(event.target.value.replace(/[^0-9]/g, ""))
+                                }
+                                placeholder="Enter value"
+                            />
+                        </label>
+                        <button
+                            type="button"
+                            className={cl.add__water__confirm}
+                            onClick={handleConfirm}
+                            disabled={!isAmountValid || isAnimating}
+                        >
+                            Add
+                        </button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
