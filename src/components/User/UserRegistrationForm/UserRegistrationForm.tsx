@@ -5,13 +5,13 @@ import cl from "./UserRegistrationForm.module.scss";
 import InputField from "../../UI/Form/InputField/InputField";
 import GenderSelector from "./GenderSelector";
 import { useWaterStore } from "../../../store/waterStore";
+import { calculateDailyWaterNorm } from "../../../utils/water/recommended";
 
 interface FormState {
     nickname: string;
     gender: Gender | "";
     age: string;
     weight: string;
-    recommendedWater: string;
 }
 
 const defaultFormState: FormState = {
@@ -19,7 +19,6 @@ const defaultFormState: FormState = {
     gender: "",
     age: "",
     weight: "",
-    recommendedWater: "",
 };
 
 const parseOptionalNumber = (value: string): number | undefined => {
@@ -63,13 +62,14 @@ const UserRegistrationForm = () => {
         const nickname = formState.nickname.trim();
         const age = parseOptionalNumber(formState.age);
         const weight = parseOptionalNumber(formState.weight);
-        const recommendedWater = parseOptionalNumber(formState.recommendedWater);
+        const recommendedWater = calculateDailyWaterNorm(weight);
 
         setUser({
             nickname,
             gender: formState.gender,
             age,
             weight,
+            recommendedWaterMl: recommendedWater,
         });
 
 
@@ -114,14 +114,14 @@ const UserRegistrationForm = () => {
                 />
 
                 <InputField
-                    name="recommendedWater"
-                    label="Daily water goal"
-                    placeholder="Enter your recommended daily intake (ml)"
-                    value={formState.recommendedWater}
+                    name="weight"
+                    label="Weight"
+                    placeholder="Enter your weight (kg)"
+                    value={formState.weight}
                     onChange={(event) =>
                         setFormState((prev) => ({
                             ...prev,
-                            recommendedWater: event.target.value.replace(/[^0-9]/g, ""),
+                            weight: event.target.value.replace(/[^0-9]/g, ""),
                         }))
                     }
                     optional

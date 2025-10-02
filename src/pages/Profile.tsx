@@ -3,6 +3,7 @@ import useUserStore from "../store/userStore";
 import { useWaterStore } from "../store/waterStore";
 import InputField from "../components/UI/Form/InputField/InputField";
 import cl from "./styles/Profile.module.scss";
+import { calculateDailyWaterNorm } from "../utils/water/recommended";
 
 
 
@@ -30,11 +31,12 @@ const Profile = () => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const autoRecommended = useMemo(() => calculateDailyWaterNorm(weight), [weight]);
     const [formState, setFormState] = useState({
         nickname: nickname ?? "",
         age: age ? String(age) : "",
         weight: weight ? String(weight) : "",
-        recommendedWater: (recommendedWaterMl ?? dailyGoalMl)?.toString() ?? "",
+        recommendedWater: (recommendedWaterMl ?? dailyGoalMl ?? autoRecommended)?.toString() ?? "",
     });
 
     useEffect(() => {
@@ -43,10 +45,10 @@ const Profile = () => {
                 nickname: nickname ?? "",
                 age: age ? String(age) : "",
                 weight: weight ? String(weight) : "",
-                recommendedWater: (recommendedWaterMl ?? dailyGoalMl)?.toString() ?? "",
+                recommendedWater: (recommendedWaterMl ?? dailyGoalMl ?? autoRecommended)?.toString() ?? "",
             });
         }
-    }, [nickname, age, weight, recommendedWaterMl, dailyGoalMl, isEditing]);
+    }, [nickname, age, weight, recommendedWaterMl, dailyGoalMl, isEditing, autoRecommended]);
 
     const errors = useMemo(() => {
         if (!submitted) {
@@ -78,21 +80,23 @@ const Profile = () => {
         const parsedAge = parseOptionalNumber(formState.age);
         const parsedWeight = parseOptionalNumber(formState.weight);
         const parsedRecommended = parseOptionalNumber(formState.recommendedWater);
+        const fallbackRecommended = calculateDailyWaterNorm(parsedWeight);
+        const recommendedToSave = parsedRecommended ?? fallbackRecommended;
 
         updateUser({
             nickname: trimmedNickname,
             age: parsedAge,
             weight: parsedWeight,
-            recommendedWaterMl: parsedRecommended,
+            recommendedWaterMl: recommendedToSave,
         });
 
-        if (parsedRecommended) {
-            setDailyGoal(parsedRecommended);
-        }
+        if (recommendedToSave) {
+            setDailyGoal(recommendedToSave);
 
-        setIsEditing(false);
-        setSubmitted(false);
-    };
+            setIsEditing(false);
+            setSubmitted(false);
+        };
+    }
 
     const handleCancel = () => {
         setIsEditing(false);
@@ -101,9 +105,15 @@ const Profile = () => {
             nickname: nickname ?? "",
             age: age ? String(age) : "",
             weight: weight ? String(weight) : "",
-            recommendedWater: (recommendedWaterMl ?? dailyGoalMl)?.toString() ?? "",
+            recommendedWater: (recommendedWaterMl ?? dailyGoalMl ?? autoRecommended)?.toString() ?? "",
         });
     };
+
+    const calculatedDailyNorm = useMemo(() => {
+        const parsedWeight = parseOptionalNumber(formState.weight);
+
+        return calculateDailyWaterNorm(parsedWeight ?? weight);
+    }, [formState.weight, weight]);
 
     return (
         <section className={cl.profile}>
@@ -170,7 +180,9 @@ const Profile = () => {
                             inputMode="numeric"
                             error={errors.recommendedWater}
                         />
-
+                        <p className={cl.profile__hint}>
+                            Based on your weight: {calculatedDailyNorm ? `${calculatedDailyNorm} ml` : "-"}
+                        </p>
                         <div className={cl.profile__formButtons}>
                             <button type="button" onClick={handleCancel} className={cl.profile__cancel}>
                                 Cancel
@@ -200,7 +212,11 @@ const Profile = () => {
                         </div>
                         <div className={cl.profile__infoRow}>
                             <h3>Recommended water intake</h3>
-                            <div>{(recommendedWaterMl ?? dailyGoalMl) ? `${recommendedWaterMl ?? dailyGoalMl} ml` : "-"}</div>
+                            <div>
+                                {recommendedWaterMl ?? dailyGoalMl ?? autoRecommended
+                                    ? `${recommendedWaterMl ?? dailyGoalMl ?? autoRecommended} ml`
+                                    : "-"}
+                            </div>
                         </div>
                         <div className={cl.profile__infoRow}>
                             <h3>Coins balance</h3>
@@ -215,5 +231,6 @@ const Profile = () => {
         </section>
     );
 };
+
 
 export default Profile;

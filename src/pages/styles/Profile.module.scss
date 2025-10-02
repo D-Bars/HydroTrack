@@ -111,6 +111,12 @@
     @include box(60%);
 }
 
+.profile__hint {
+    margin-top: -0.5vh;
+
+    @include text(95%, 400, rgba($fontColorMain, 0.8));
+}
+
 .profile__formButtons {
     margin-top: 1vh;
     gap: 1vw;
