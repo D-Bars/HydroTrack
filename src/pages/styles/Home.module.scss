@@ -8,6 +8,13 @@
 
     @include flex__box(row, flex-start);
     @include box(100%, 1%, auto, 5vh);
+
+    @media screen and (max-width: 800px) {
+        flex-direction: column;
+        width: 98%;
+        padding: 0 1%;
+        margin-top: 3vh;
+    }
 }
 
 .additional__info__block {
@@ -15,6 +22,10 @@
 
     @include box(30%);
     @include flex__box(column);
+
+    @media screen and (max-width: 800px) {
+        gap: 1vh;
+    }
 }
 
 .coins__body{
@@ -29,6 +40,10 @@
 
     & .coins__img__wrapper{
         @include img_box(3vw);
+
+        @media screen and (max-width: 800px) {
+            width: 40px;
+        }
     }
 }
 
@@ -45,5 +60,9 @@
         & img {
             transition: .4s;
         }
+    }
+
+    @media screen and (max-width: 800px) {
+        width: 60%;
     }
 }

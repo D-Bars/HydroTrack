@@ -34,6 +34,11 @@
   &::placeholder {
     @include text(85%, 400, $fontColorSup);
   }
+
+  @media screen and (max-width: 800px) {
+    width: 95%;
+    padding: 1vh 2.5%;
+  }
 }
 
 .field__input_error {

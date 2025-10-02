@@ -16,6 +16,8 @@
         @include flex__box(column, center, center);
         @include text(105%, 600, $fontColorSup);
     }
+
+    @media screen and (max-width: 800px) {}
 }
 
 
@@ -36,5 +38,15 @@
         border-radius: 5px;
 
         @include box(70%);
+
+        @media screen and (max-width: 800px) {
+            padding: 0.5vh 0;
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .item__day__month {
+        padding: 0.5vh 0;
     }
 }

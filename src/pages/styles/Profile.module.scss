@@ -16,6 +16,12 @@
 
     @include box(50%, 5%);
     @include flex__box(column, center, center);
+
+    @media screen and (max-width: 800px) {
+        width: 93%;
+        padding: 5vh 3.5%;
+        padding-bottom: 2vh;
+    }
 }
 
 .profile__back__home {
@@ -75,6 +81,10 @@
 
     &:last-child {
         border-bottom: none;
+    }
+
+    @media screen and (max-width: 800px) {
+        gap: 3vw;
     }
 }
 

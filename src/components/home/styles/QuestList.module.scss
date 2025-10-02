@@ -20,6 +20,10 @@
             padding: 0.5vh 0.3vw;
             border-radius: 50%;
             @include text(100%, 800, $fontColorSup, 'Font Awesome 5 Free');
+
+            @media screen and (max-width: 800px) {
+                padding: 0.5vh 1.5vw;
+            }
         }
 
 

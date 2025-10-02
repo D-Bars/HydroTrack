@@ -17,6 +17,10 @@
     padding: 0;
 
     @include flex__box(row, center, flex-end);
+
+    @media screen and (max-width: 800px) {
+        gap: 1vw;
+    }
 }
 
 .avatar__wrapper__img {
@@ -26,6 +30,9 @@
     flex: 0 0 auto;
 
     @include img_box(30px, auto);
+    @media screen and (max-width: 800px) {
+        width: 35px;
+    }
 }
 
 .user__name {
@@ -37,6 +44,10 @@
     transition: .2s ease;
 
     @include img_box(10px, auto);
+
+    @media screen and (max-width: 800px) {
+        width: 12px;
+    }
 }
 
 .arrow__wrapper__img_open {
@@ -60,6 +71,11 @@
 
     @include box(100%, 3%);
     @include flex__box(column, flex-end);
+
+    @media screen and (max-width: 800px) {
+        width: 90%;
+        padding: 1vh 5%;
+    }
 }
 
 .user__modal_open {
@@ -74,6 +90,10 @@
 
     @include flex__box(column, flex-start);
     @include box(100%);
+
+    @media screen and (max-width: 800px) {
+        gap: 2vh;
+    }
 }
 
 .user__actions__item {
@@ -82,19 +102,29 @@
     cursor: pointer;
 
     @include flex__box(row, center);
+    @include box(100%);
 }
 
 .user__actions__icon {
     position: relative;
 
-    @include img_box(20px, auto);
+    @include img_box(25px, auto);
+
+    @media screen and (max-width: 800px) {
+        width: 25px;
+        padding: 0 5px;
+    }
 }
 
 .user__actions__label {
+    @include box(100%);
     @include text(100%, 500, #fff);
 }
 
 button.user__actions__label {
     background: none;
     cursor: pointer;
+    text-align: left;
+
+    @include box(100%);
 }

@@ -1,9 +1,10 @@
+import cl from "./BottleProgress.module.scss"
+
 type BottleWithWaterProps = {
     progress: number;
 };
 
 export default function BottleWithWater({ progress }: BottleWithWaterProps) {
-    console.log(progress);
     const vb = { w: 200, h: 400 };
 
     const bottlePath = `
@@ -31,15 +32,10 @@ export default function BottleWithWater({ progress }: BottleWithWaterProps) {
     const levelY = fillBottomY - (fillHeight * percent) / 100;
 
     return (
-        <div
-            style={{
-                background: "#0D0D10",
-                display: "inline-block",
-            }}
+        <div className={cl.bottle__mask}
         >
-            <svg
+            <svg className={cl.bottle}
                 viewBox={`0 0 ${vb.w} ${vb.h}`}
-                style={{ display: "block", width: 200, height: "auto" }}
             >
                 <defs>
                     <clipPath id="bottle-clip" clipPathUnits="userSpaceOnUse">

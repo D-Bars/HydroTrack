@@ -3,6 +3,11 @@
 .register {
   @include flex__box(row, center, center);
   @include box(100%, 2.5%, 90dvh);
+
+  @media screen and (max-width: 800px) {
+    width: 95%;
+    padding: 0 2.5%;
+  }
 }
 
 .register__card {
@@ -14,6 +19,10 @@
   gap: 2.5vh;
 
   @include flex__box(column, stretch);
+
+  @media screen and (max-width: 800px) {
+
+  }
 }
 
 .register__head {

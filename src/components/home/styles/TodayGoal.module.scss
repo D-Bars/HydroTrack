@@ -7,6 +7,7 @@
     @include flex__box(column, center, flex-end);
 
     & .add__water {
+        position: relative;
         padding: 1vh 2vw;
         background-color: transparent;
         border-radius: 10px;
@@ -21,6 +22,11 @@
         cursor: default;
 
         @include text(120%, 800, $fontColorMain);
+    }
+
+    @media screen and (max-width: 800px) {
+        width: 35%;
+        padding: 2vh 2.5%;
     }
 }
 
@@ -40,6 +46,14 @@
 
     @include flex__box(column, stretch);
     @include box(100%, 2.5%, auto, 1vh);
+
+    @media screen and (max-width: 800px) {
+        width: 95%;
+        padding: 2vh 2.5%;
+        position: absolute;
+        bottom: 45px;
+        background-color: $color1;
+    }
 }
 
 .add__water__panelTitle {
@@ -77,6 +91,10 @@
     @include flex__box(column, flex-start);
     @include text(90%, 500, $fontColorMain);
 
+    @media screen and (max-width: 800px) {
+        gap: 1vh;
+    }
+
     & input {
         padding: 0.5vh 2.5%;
         border-radius: 8px;
@@ -85,6 +103,11 @@
         color: $fontColorMain;
 
         @include box(100%, 2.5%);
+
+        @media screen and (max-width: 800px) {
+            width: 95%;
+            padding: 1vh 2.5%;
+        }
     }
 }
 

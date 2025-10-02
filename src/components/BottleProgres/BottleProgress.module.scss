@@ -1,0 +1,16 @@
+@use '../../styles/global.scss' as *;
+
+.bottle__mask {
+    background: $color1;
+    display: inline-block
+}
+
+.bottle {
+  display: block;
+  width: 200px;
+  height: auto;
+
+  @media screen and (max-width: 800px) {
+    width: 120px; 
+  }
+}

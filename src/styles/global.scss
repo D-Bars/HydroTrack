@@ -254,6 +254,12 @@ h2 {
 
     @include flex__box(column);
     @include box(100%, 2.5%);
+
+    @media screen and (max-width: 800px) {
+      width: 95%;
+      padding: 2vh 2.5%;
+      gap: 2vh;
+    }
 }
 
 // custom home page mixins
