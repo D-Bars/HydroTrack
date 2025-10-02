@@ -1,16 +1,57 @@
 @use '../../styles/global.scss' as *;
 
 .bottle__mask {
+    padding: 1.5rem;
     background: $color1;
-    display: inline-block
+    border-radius: 24px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .bottle {
-  display: block;
-  width: 200px;
-  height: auto;
+    display: block;
+    width: 200px;
+    height: auto;
+}
 
-  @media screen and (max-width: 800px) {
-    width: 120px; 
-  }
+.water__fill {
+    transition: y 1.2s ease-in-out, height 1.2s ease-in-out;
+}
+
+.wave__wrapper {
+    transition: transform 1.2s ease-in-out;
+}
+
+.wave {
+    fill: rgba(255, 255, 255, 0.35);
+    opacity: 0.8;
+    animation: waveDrift 6s linear infinite;
+}
+
+.wave__secondary {
+    fill: rgba(255, 255, 255, 0.25);
+    animation-duration: 8s;
+    animation-direction: reverse;
+}
+
+@keyframes waveDrift {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(200px);
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .bottle {
+        width: 120px;
+    }
+
+    .bottle__mask {
+        padding: 1rem;
+        border-radius: 18px;
+    }
 }

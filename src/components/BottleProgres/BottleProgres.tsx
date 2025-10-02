@@ -32,34 +32,47 @@ export default function BottleWithWater({ progress }: BottleWithWaterProps) {
     const levelY = fillBottomY - (fillHeight * percent) / 100;
 
     return (
-        <div className={cl.bottle__mask}
-        >
-            <svg className={cl.bottle}
-                viewBox={`0 0 ${vb.w} ${vb.h}`}
-            >
+        <div className={cl.bottle__mask}>
+            <svg className={cl.bottle} viewBox={`0 0 ${vb.w} ${vb.h}`}>
                 <defs>
                     <clipPath id="bottle-clip" clipPathUnits="userSpaceOnUse">
                         <path d={bottlePath} />
                     </clipPath>
+                    <linearGradient id="water-gradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#6EC7FF" />
+                    </linearGradient>
                 </defs>
 
                 {/* Water */}
-                <rect
-                    x="0"
-                    y={levelY}
-                    width={vb.w}
-                    height={fillBottomY - levelY}
-                    fill="#3BA2FF"
-                    clipPath="url(#bottle-clip)"
-                />
+                <g clipPath="url(#bottle-clip)">
+                    <rect
+                        className={cl.water__fill}
+                        x="0"
+                        y={levelY}
+                        width={vb.w}
+                        height={fillBottomY - levelY}
+                        fill="url(#water-gradient)"
+                    />
+
+                    <g
+                        className={cl.wave__wrapper}
+                        style={{
+                            transform: `translateY(${levelY - 12}px)`,
+                        }}
+                    >
+                        <path
+                            className={cl.wave}
+                            d="M -220 0 Q -170 20 -120 0 T -20 0 T 80 0 T 180 0 T 280 0 V200 H -220 Z"
+                        />
+                        <path
+                            className={`${cl.wave} ${cl.wave__secondary}`}
+                            d="M -240 10 Q -190 -5 -140 10 T -40 10 T 60 10 T 160 10 T 260 10 V200 H -240 Z"
+                        />
+                    </g>
+                </g>
 
                 {/* Bottle outline */}
-                <path
-                    d={bottlePath}
-                    fill="none"
-                    stroke="white"
-                    strokeWidth={3}
-                />
+                 <path d={bottlePath} fill="none" stroke="white" strokeWidth={3} />
             </svg>
         </div>
     );
