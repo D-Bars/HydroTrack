@@ -10,6 +10,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const Home = () => {
   const gender = useUserStore((state) => state.gender);
+  const coins = useUserStore((state) => state.coins);
   const avatarSet = useMemo(() => getMainAvatarArray(gender), [gender]);
   const [currentAvatar, setCurrentAvatar] = useState(avatarSet?.default ?? "");
   const [isAvatarAnimating, setIsAvatarAnimating] = useState(false);
@@ -65,7 +66,7 @@ const Home = () => {
           </div>
           <div className={cl.coins__body}>
             <div className={cl.coins__img__wrapper}><img src="/Ico/coin.png" alt="Coin" /></div>
-            <div className={cl.coins__value}>0</div>
+            <div className={cl.coins__value}>{coins}</div>
           </div>
         </div>
       </div>

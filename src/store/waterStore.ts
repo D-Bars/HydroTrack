@@ -4,6 +4,7 @@ import { getRandomQuest } from "../utils/quest/getRandomQuest";
 import { getDailyQuests } from "../utils/quest/getDaileQuests";
 import { formatDateKey } from "../utils/date/date";
 import type { Quest } from "../types/Quest";
+import useUserStore from "./userStore";
 
 interface WaterState {
   entries: WaterEntry[];
@@ -36,6 +37,34 @@ const syncDaily = (
     visibleQuestIds: needNew ? getRandomQuest(2) : visibleQuestIds,
     questsGeneratedOn: needNew ? today : questsGeneratedOn,
   };
+};
+
+const calculateQuestRewards = (
+  previousQuests: Quest[],
+  nextQuests: Quest[],
+  todayKey: string,
+  activeQuestIds: string[],
+) => {
+  return nextQuests.reduce((total, quest) => {
+    if (!activeQuestIds.includes(quest.id)) {
+      return total;
+    }
+
+    if (quest.completedOn !== todayKey) {
+      return total;
+    }
+
+    const wasCompleted = previousQuests.some(
+      (prevQuest) => prevQuest.id === quest.id && prevQuest.completedOn === todayKey,
+    );
+
+    if (wasCompleted) {
+      return total;
+    }
+
+    const rewardValue = Number.parseInt(quest.reward, 10);
+    return Number.isFinite(rewardValue) ? total + rewardValue : total;
+  }, 0);
 };
 
 const loadStateToLocalStore = () => {
@@ -90,11 +119,23 @@ export const useWaterStore = create<WaterState>()((set, get) => ({
       timestamp: date.toISOString(),
     };
 
+    const todayKey = formatDateKey(new Date());
+    let coinsEarned = 0;
     set((state) => {
       const entries = sortByTimeDesc([entry, ...state.entries]);
       const synced = syncDaily(entries, state.visibleQuestIds, state.questsGeneratedOn);
+      coinsEarned = calculateQuestRewards(
+        state.quests,
+        synced.quests,
+        todayKey,
+        synced.visibleQuestIds,
+      );
       return { entries, ...synced };
     });
+
+    if (coinsEarned > 0) {
+      useUserStore.getState().addCoins(coinsEarned);
+    }
     saveStateToLocalStore({
       entries: get().entries,
       dailyGoalMl: get().dailyGoalMl,
@@ -114,9 +155,23 @@ export const useWaterStore = create<WaterState>()((set, get) => ({
   },
 
   syncDailyQuests: () => {
+    const todayKey = formatDateKey(new Date());
+    let coinsEarned = 0;
     set((state) => ({
-      ...syncDaily(state.entries, state.visibleQuestIds, state.questsGeneratedOn),
+      ...(() => {
+        const synced = syncDaily(state.entries, state.visibleQuestIds, state.questsGeneratedOn);
+        coinsEarned = calculateQuestRewards(
+          state.quests,
+          synced.quests,
+          todayKey,
+          synced.visibleQuestIds,
+        );
+        return synced;
+      })(),
     }));
+    if (coinsEarned > 0) {
+      useUserStore.getState().addCoins(coinsEarned);
+    }
     saveStateToLocalStore({
       entries: get().entries,
       dailyGoalMl: get().dailyGoalMl,

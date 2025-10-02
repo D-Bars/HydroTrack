@@ -23,6 +23,7 @@ const Profile = () => {
     const gender = useUserStore((state) => state.gender);
     const recommendedWaterMl = useUserStore((state) => state.recommendedWaterMl);
     const updateUser = useUserStore((state) => state.updateUser);
+    const coins = useUserStore((state) => state.coins);
 
     const dailyGoalMl = useWaterStore((state) => state.dailyGoalMl);
     const setDailyGoal = useWaterStore((state) => state.setDailyGoal);
@@ -203,7 +204,7 @@ const Profile = () => {
                         </div>
                         <div className={cl.profile__infoRow}>
                             <h3>Coins balance</h3>
-                            <div>0</div>
+                            <div>{coins}</div>
                         </div>
                         <button type="button" className={cl.profile__editButton} onClick={() => setIsEditing(true)}>
                             Edit profile
