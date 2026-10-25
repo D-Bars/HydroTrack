@@ -11,7 +11,6 @@ const CalendarWeek = () => {
     <div className={clsx(cl.additional__info__box, cl.wrapper__item)}>
       <div className={cl.additional__info__head__line}>
         <h3>Calendar</h3>
-        <a href="#">View calendar</a>
       </div>
       <ul className={cl.calendar__body}>
         {week.map((day) => (

@@ -28,7 +28,6 @@ const QuestList = () => {
     <div className={clsx(cl.additional__info__box, cl.wrapper__item)}>
       <div className={cl.additional__info__head__line}>
         <h3>Quest</h3>
-        <a href="#">All quests</a>
       </div>
       <ul className={cl.quest__body}>
         {visibleQuests.map((quest) => (

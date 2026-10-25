@@ -45,7 +45,6 @@ const Entries = () => {
     <div className={clsx(cl.additional__info__box, cl.wrapper__item)}>
       <div className={cl.additional__info__head__line}>
         <h3>Entries</h3>
-        <a href="#">All entries</a>
       </div>
       <ul className={cl.water__progress__body}>{renderContent()}</ul>
     </div>
